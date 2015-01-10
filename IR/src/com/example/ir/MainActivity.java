@@ -4,7 +4,6 @@ import java.io.Console;
 
 import android.app.Activity;
 import android.content.Context;
-import android.hardware.ConsumerIrManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,35 +11,33 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 
 public class MainActivity extends Activity{
-	ConsumerIrManager mCIR;	
+	
 	private static final String TAG = "ConsumerIrTest";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button irButton = (Button) findViewById(R.id.IrButton);
-        mCIR = (ConsumerIrManager)getSystemService(Context.CONSUMER_IR_SERVICE);
-        IrCommand prontoCommand = IrCommand.Pronto.buildPronto("0000 006d 0022 0003 00a9 00a8 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0015 0015 003f 0015 003f 0015 003f 0015 003f 0015 003f 0015 003f 0015 0702 00a9 00a8 0015 0015 0015 0e6e");
+        final ConsumerIrManager manager = ConsumerIrManager.getSupportConsumerIrManager(this);
+        final IrCommand prontoCommand = IrCommand.Pronto.buildPronto("0000 006d 0022 0003 00a9 00a8 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0015 0015 003f 0015 003f 0015 003f 0015 003f 0015 003f 0015 003f 0015 0702 00a9 00a8 0015 0015 0015 0e6e");
        
         irButton.setOnClickListener(new OnClickListener() {
         	
        
 			public void onClick(View v) {
-				 if (!mCIR.hasIrEmitter()) {
-	        		 Log.e(TAG, "No IR Emitter found\n");
+				 if (!manager.hasIrEmitter()) {
+					 Toast.makeText(getApplicationContext(), "Cannot Find Transmitter", Toast.LENGTH_LONG).show();
+					 Log.e(TAG, "No IR Emitter found\n");
 	        		 return;
 	        		 }
-				 int[] pattern = {1901, 4453, 625, 1614, 625, 1588, 625, 1614, 625, 442, 625, 442, 625,
-						 468, 625, 442, 625, 494, 572, 1614, 625, 1588, 625, 1614, 625, 494, 572, 442, 651,
-						 442, 625, 442, 625, 442, 625, 1614, 625, 1588, 651, 1588, 625, 442, 625, 494, 598,
-						 442, 625, 442, 625, 520, 572, 442, 625, 442, 625, 442, 651, 1588, 625, 1614, 625,
-						 1588, 625, 1614, 625, 1588, 625, 48958};
-						 // transmit the pattern at 38.4KHz
-						 mCIR.transmit(38400, pattern);
+				
+						// transmit the pattern at 38.4KHz
+				 		manager.transmit(prontoCommand);
 			}
 		});
       
