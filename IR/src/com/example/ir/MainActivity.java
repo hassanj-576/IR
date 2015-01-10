@@ -24,6 +24,7 @@ public class MainActivity extends Activity{
         setContentView(R.layout.activity_main);
         Button irButton = (Button) findViewById(R.id.IrButton);
         mCIR = (ConsumerIrManager)getSystemService(Context.CONSUMER_IR_SERVICE);
+        IrCommand prontoCommand = IrCommand.Pronto.buildPronto("0000 006d 0022 0003 00a9 00a8 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 003f 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 003f 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0015 0015 003f 0015 003f 0015 003f 0015 003f 0015 003f 0015 003f 0015 0702 00a9 00a8 0015 0015 0015 0e6e");
        
         irButton.setOnClickListener(new OnClickListener() {
         	
